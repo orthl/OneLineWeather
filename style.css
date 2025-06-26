@@ -80,16 +80,15 @@ footer nav a:hover {
   text-decoration: underline;
 }
 
-button.location-btn {
+#location-input {
   position: absolute;
   top: 1rem;
   right: 1rem;
-  background: none;
-  border: 1px solid white;
   padding: 0.5rem 1rem;
+  border: none;
   border-radius: 5px;
-  color: white;
-  cursor: pointer;
+  font-size: 1rem;
+  outline: none;
 }
 
 @media (max-width: 600px) {

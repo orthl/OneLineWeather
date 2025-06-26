@@ -1,44 +1,27 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>OneLineWeather</title>
   <link rel="stylesheet" href="style.css">
+  <script type="module" src="index.js"></script>
 </head>
 <body>
   <header>
-    <button class="location-btn">Standort</button>
+    <input type="text" id="location-input" name="location-input" placeholder="Enter your location...">
   </header>
   <main class="main">
-    <div class="sentence">Bitte wähle deinen Standort.</div>
-    <div class="forecast">
-      <div class="forecast-item">
-        <img src="icons/day-clear.svg" alt="">
-        <h3>Vormittag</h3>
-        <p>🌡 24°C<br>💧 10 %</p>
-      </div>
-      <div class="forecast-item">
-        <img src="icons/day-cloudy.svg" alt="">
-        <h3>Mittags</h3>
-        <p>🌡 24°C<br>💧 10 %</p>
-      </div>
-      <div class="forecast-item">
-        <img src="icons/cloudy.svg" alt="">
-        <h3>Abends</h3>
-        <p>🌡 24°C<br>💧 10 %</p>
-      </div>
-      <div class="forecast-item">
-        <img src="icons/night-cloudy.svg" alt="">
-        <h3>Nachts</h3>
-        <p>🌡 24°C<br>💧 10 %</p>
-      </div>
+    <div class="sentence-block">
+      <img class="main-icon" src="" alt="Weather Icon" />
+      <p class="sentence"></p>
     </div>
+    <div class="forecast" id="forecast-container"></div>
   </main>
   <footer>
     <nav>
-      <a href="privacypolicy.html">Datenschutz</a>
-      <a href="imprint.html">Impressum</a>
+      <a href="privacy-policy.html">Privacy Policy</a>
+      <a href="imprint.html">Imprint</a>
       <a href="credits.html">Credits</a>
     </nav>
   </footer>
