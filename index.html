@@ -3,23 +3,25 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>OneLineWeather</title>
+  <title>One Line Weather</title>
   <link rel="stylesheet" href="style.css">
   <script type="module" src="index.js"></script>
 </head>
 <body>
-  <header>
-    <input type="text" id="location-input" name="location-input" placeholder="Enter your location...">
-  </header>
   <main class="main">
     <div class="sentence-block">
       <img class="main-icon" src="" alt="Weather Icon" />
-      <p class="sentence"></p>
+      <h1 class="sentence"></h1>
+      <p id="welcome-text" class="welcome-text">
+        Discover the current weather conditions at any city or town in the world — simply type your location above and get an instant, clear one-line weather report. OneLineWeather provides fast, easy-to-understand weather info without distractions, perfect for planning your day or staying informed on the go.
+      </p>
+      <input type="text" id="location-input" placeholder="Enter location here...">
     </div>
     <div class="forecast" id="forecast-container"></div>
   </main>
   <footer>
     <nav>
+      <a href="/">Home</a>
       <a href="privacy-policy.html">Privacy Policy</a>
       <a href="imprint.html">Imprint</a>
       <a href="credits.html">Credits</a>
