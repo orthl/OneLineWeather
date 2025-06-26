@@ -4,11 +4,17 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>OneLineWeather</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <header>
-    <button class="location-btn">Standort</button>
+    <form id="location-form">
+      <input type="text" id="location-input" placeholder="Standort eingeben" />
+      <button type="submit" class="location-btn">Suchen</button>
+    </form>
   </header>
   <main class="main">
     <div class="sentence">Bitte wähle deinen Standort.</div>
@@ -43,4 +49,6 @@
     </nav>
   </footer>
 </body>
+  <script src="normalise_weather.js"></script>
+  <script src="index.js"></script>
 </html>
