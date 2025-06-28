@@ -18,11 +18,16 @@
   box-sizing: border-box;
 }
 
-body {
+html, body {
+  overflow-x: hidden;
+  overflow-y: auto;
   font-family: 'FiraCode', monospace;
   background: #0e0e0e;
   color: white;
   min-height: 100vh;
+}
+
+body {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -35,42 +40,39 @@ header {
   position: relative;
 }
 
-
 #location-input {
-  background-color: transparent;
+  background: transparent;
   font-size: 2rem;
   outline: none;
   color: #ccc;
   border: none;
-  border-bottom: 2px solid #ccc; /* nur untere Linie sichtbar */
+  border-bottom: 2px solid #ccc;
   font-family: 'FiraCode', monospace;
   padding: 0.2rem 0;
 }
-
-
 
 .main {
   flex: 1;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
   justify-content: flex-start;
-  text-align: left;
-  gap: 2rem;
+  align-items: flex-start;
   padding: 4rem;
   max-width: 80%;
   width: 100%;
   position: relative;
+  min-height: calc(100vh - 8rem); /* falls header/footer je 4rem */
 }
 
 .sentence-block {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: 1.5rem;
-  margin-bottom: 2rem;
-  padding-top: 20%;
-  padding-bottom: 20%;
 }
 
 .main-icon {
@@ -96,6 +98,7 @@ header {
   align-items: flex-start;
   width: 100%;
   box-sizing: border-box;
+  margin-top: auto;
 }
 
 .forecast-item {
@@ -106,8 +109,6 @@ header {
   width: 22%;
   background: transparent;
   padding: 1rem 0.5rem;
-  border-radius: 0;
-  text-align: left;
 }
 
 .forecast-item img.weather-icon {
@@ -159,154 +160,109 @@ footer nav a:hover {
   border-bottom: 1px dashed white;
 }
 
+a {
+  color: white;
+  text-decoration: underline;
+  transition: color 0.3s;
+}
+
+a:hover,
+a:visited {
+  color: #ccc;
+}
+
+.main-icon,
+.weather-icon,
+.inline-icon {
+  filter: brightness(0) invert(1) drop-shadow(0 0 1px white) !important;
+}
+
+/* Responsive: Mobile */
 @media (max-width: 600px) {
+  .main {
+    padding: 1rem;
+    max-width: 100%;
+  }
+
+  .sentence-block {
+    position: static;
+    transform: none;
+    margin-bottom: 1rem;
+    padding: 2rem 0;
+  }
+
   .sentence {
-    font-size: 1.6rem;
+    font-size: 2rem;
   }
 
   .forecast {
     flex-direction: column;
+    gap: 1rem;
+    width: 100%;
   }
 
   .forecast-item {
     width: 100%;
+    max-width: none;
     flex-direction: row;
-    max-width: 300px;
+    align-items: center;
+    border-bottom: 1px solid #333;
+    padding: 1rem 0;
+  }
+
+  .forecast-item img.weather-icon {
+    width: 60px;
+    height: 60px;
+    margin-top: 0;
   }
 
   .forecast-content h3 {
     font-size: 1.2rem;
   }
-}
 
-.main-icon,.weather-icon,
-.inline-icon {
-  filter: brightness(0) invert(1) drop-shadow(0 0 1px white) !important;
-}
-
-
-
-/* Generell kein Overflow */
-html, body {
-  overflow-x: hidden;
-  overflow-y: auto; /* vertikal scrollen nur wenn nötig */
-}
-
-a {
-  color: white; /* Standardfarbe */
-  text-decoration: underline;
-  transition: color 0.3s;
-}
-
-a:hover {
-  color: #ccc; /* Bei Hover */
-}
-
-a:visited {
-  color: #ccc; /* Nach dem Klicken */
-}
-
-@media (max-width: 600px) {
-  .sentence-block {
-    position: static !important;
-    bottom: auto !important;
-    margin-bottom: 1rem; /* optional für Abstand */
+  .forecast-content p {
+    font-size: 1rem;
+    margin-bottom: 0;
   }
 
-  .forecast {
-    position: static !important;
-    bottom: auto !important;
-    width: 100% !important;
+  .inline-icon {
+    width: 20px;
+    height: 20px;
+    margin-left: 0;
   }
 
-  .main {
-    display: flex !important;
-    flex-direction: column !important;
-    justify-content: flex-start !important;
-    gap: 1.5rem !important;
-    max-width: 100% !important;
-    padding: 1rem !important;
+  .main-icon {
+    width: 100px;
+    height: 100px;
+    margin-left: 0;
+    margin-bottom: 0;
   }
 
-    /* Sentence kleiner machen */
-    .sentence {
-      font-size: 2rem;
-    }
-  
-    /* Forecast vertikal anordnen */
-    .forecast {
-      flex-direction: column;
-      gap: 1rem;
-    }
-  
-    /* Forecast-Items auf volle Breite, mit flex-row */
-    .forecast-item {
-      width: 100%;
-      max-width: none;
-      flex-direction: row;
-      align-items: center;
-      gap: 1rem;
-      border-bottom: 1px solid #333;
-      padding: 1rem 0;
-    }
-  
-    /* Wetter-Icon kleiner */
-    .forecast-item img.weather-icon {
-      width: 60px;
-      height: 60px;
-      margin-top: 0;
-    }
-  
-    /* Forecast Content */
-    .forecast-content h3 {
-      font-size: 1.2rem;
-    }
-  
-    .forecast-content p {
-      font-size: 1rem;
-      margin-bottom: 0;
-    }
-  
-    /* Inline Icons kleiner */
-    .inline-icon {
-      width: 20px;
-      height: 20px;
-      margin-left: 0;
-    }
-  
-    /* Main icon kleiner und margin anpassen */
-    .main-icon {
-      width: 100px;
-      height: 100px;
-      margin-left: 0;
-      margin-bottom: 0;
-    }
-  
-    /* Main Bereich padding anpassen */
-    .main {
-      padding: 1rem !important;
-      max-width: 100%;
-    }
-  
-    /* Footer zentrieren */
-    footer {
-      max-width: 100%;
-      padding: 1rem 0;
-    }
+  #location-input {
+    font-size: 1.5rem;
+  }
 
-    #location-input {
-      background-color: transparent;
-      font-size: 1.5rem;
-      outline: none;
-      color: #ccc;
-      border: none;
-      border-bottom: 2px solid #ccc; /* nur untere Linie sichtbar */
-      font-family: 'FiraCode', monospace;
-      padding: 0.2rem 0;
-    }
+  footer {
+    padding: 1rem 0;
+  }
 }
 
+/* Responsive: Tablet & kleinere Laptops */
 @media (min-width: 601px) and (max-width: 1400px) {
+  .main {
+    padding: 2rem;
+    max-width: 100%;
+  }
+
+  .sentence {
+    font-size: 3rem;
+  }
+
+  .main-icon {
+    width: 150px;
+    height: 150px;
+  }
+
   .forecast {
     flex-wrap: wrap;
     gap: 2rem;
@@ -314,7 +270,7 @@ a:visited {
   }
 
   .forecast-item {
-    width: 45%; /* zwei in einer Reihe mit Abstand */
+    width: 45%;
     flex-direction: row;
     align-items: center;
     padding: 1rem 0;
@@ -339,23 +295,4 @@ a:visited {
     height: 30px;
     margin-left: 0;
   }
-
-  .main {
-    padding: 2rem;
-    max-width: 100%;
-  }
-
-  .sentence {
-    font-size: 3rem;
-  }
-
-  .main-icon {
-    width: 150px;
-    height: 150px;
-  }
-	
-.sentence-block {
-  padding-top: 10%;
-  padding-bottom: 10%;
-}
 }
