@@ -19,18 +19,20 @@ const MAX_OFFSET = 3;
 locationInput.addEventListener('input', () => {
   clearTimeout(debounceTimer);
 
+  const query = locationInput.value.trim();
+
+  if (!query) {
+    sentenceElement.textContent = 'One Line Weather.';
+    forecastContainer.innerHTML = '';
+    mainIcon.src = 'symbol/wi_partly-cloudy-day.svg';
+    locationName.textContent = '';
+    welcomeText.style.display = 'block'; // Willkommenstext anzeigen
+    return;
+  } else {
+    welcomeText.style.display = 'none'; // Willkommenstext ausblenden
+  }
+
   debounceTimer = setTimeout(async () => {
-    const query = locationInput.value.trim();
-
-    if (!query) {
-      sentenceElement.textContent = 'One Line Weather.';
-      forecastContainer.innerHTML = '';
-      mainIcon.src = 'symbol/wi_partly-cloudy-day.svg';
-      locationName.textContent = '';
-      welcomeText.style.display = 'block';
-      return;
-    }
-
     localStorage.setItem('lastLocation', query);
     await handleLocation(query);
   }, 500);
@@ -161,7 +163,6 @@ function renderForecastItemsHourly(hourly) {
     `;
 
     forecastContainer.appendChild(item);
-
   });
 }
 
