@@ -350,7 +350,7 @@ a:visited {
 
 .about-section {
   width: 100%;
-  max-width: 800px;
+  max-width: 80%;
   margin: 4rem 0 2rem 4rem; /* linksbündig am Textblock ausgerichtet */
   padding: 0;
 }
