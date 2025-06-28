@@ -48,7 +48,8 @@ header {
   border: none;
   border-bottom: 2px solid #ccc;
   font-family: 'FiraCode', monospace;
-  padding: 0.2rem 0;
+  padding: 0.5rem 0;
+  touch-action: manipulation;
 }
 
 .main {
@@ -78,7 +79,6 @@ header {
   box-sizing: border-box;
 }
 
-
 .main-icon {
   width: 200px;
   height: 200px;
@@ -89,7 +89,7 @@ header {
 }
 
 .sentence {
-  font-size: 5rem;
+  font-size: clamp(2rem, 5vw, 5rem);
   font-weight: 700;
   text-align: left;
 }
@@ -189,12 +189,11 @@ a:visited {
   }
 
   .sentence-block {
-  position: static;
-  transform: none;
-  padding: 2rem 1rem;
-  margin-bottom: 1rem;
-}
-
+    position: static;
+    transform: none;
+    padding: 2rem 1rem;
+    margin-bottom: 1rem;
+  }
 
   .sentence {
     font-size: 2rem;
@@ -252,15 +251,22 @@ a:visited {
   }
 }
 
+/* Responsive: Landscape Phones/Tablets (bis 800px) */
+@media (max-width: 800px) {
+  .forecast {
+    flex-direction: column;
+  }
+
+  .forecast-item {
+    width: 100%;
+  }
+}
+
 /* Responsive: Tablet & kleinere Laptops */
-@media (min-width: 601px) and (max-width: 1400px) {
+@media (min-width: 801px) and (max-width: 1400px) {
   .main {
     padding: 2rem;
     max-width: 100%;
-  }
-
-  .sentence {
-    font-size: 3rem;
   }
 
   .main-icon {
@@ -299,5 +305,50 @@ a:visited {
     width: 30px;
     height: 30px;
     margin-left: 0;
+  }
+}
+
+/* Extra: große Bildschirme ab 1600px */
+@media (min-width: 1600px) {
+  .main {
+    max-width: 70%;
+    padding-left: 6rem;
+    padding-right: 6rem;
+  }
+
+  .sentence {
+    font-size: 6rem;
+  }
+}
+
+/* Optional: Light Mode Support */
+@media (prefers-color-scheme: light) {
+  body {
+    background: #fff;
+    color: #111;
+  }
+
+  a {
+    color: #0077cc;
+  }
+
+  a:hover {
+    color: #005fa3;
+  }
+
+  footer nav a:hover {
+    color: #111;
+    border-bottom-color: #111;
+  }
+
+  #location-input {
+    color: #333;
+    border-bottom-color: #333;
+  }
+
+  .main-icon,
+  .weather-icon,
+  .inline-icon {
+    filter: none !important;
   }
 }
