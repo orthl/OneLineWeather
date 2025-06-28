@@ -31,7 +31,8 @@ locationInput.addEventListener('input', () => {
 });
 
 // Forecast-Items erzeugen mit Wetterdaten
-function renderForecastItems(temp, rain, icon) {
+/* ALT: renderForecastItems ersetzt */
+function renderForecastItems_OLD(temp, rain, icon) {
   const times = ['Morning', 'Noon', 'Evening', 'Night'];
   forecastContainer.innerHTML = '';
 
@@ -105,7 +106,7 @@ async function handleLocation(query) {
   if (mainIcon) mainIcon.src = `symbol/${icon}`;
   sentenceElement.textContent = getTempComparison(avg, yAvg);
 
-  renderForecastItems(tMax, rain, icon);
+  renderForecastItemsHourly(weather.hourly);
 }
 
 const welcomeText = document.getElementById('welcome-text');
@@ -129,3 +130,51 @@ document.addEventListener('DOMContentLoaded', () => {
     welcomeText.style.display = 'block';
   }
 });
+
+
+function renderForecastItemsHourly(hourly) {
+  const timeRanges = [
+    { label: 'Morning', start: 6, end: 12 },
+    { label: 'Noon', start: 12, end: 16 },
+    { label: 'Evening', start: 16, end: 20 },
+    { label: 'Night', start: 20, end: 30 } // 20–23 + 0–5 (24–29)
+  ];
+
+  const temps = hourly.temperature_2m;
+  const rains = hourly.precipitation_probability;
+  const codes = hourly.weathercode;
+
+  forecastContainer.innerHTML = '';
+
+  timeRanges.forEach(range => {
+    let indices = [];
+    for (let h = range.start; h < range.end; h++) {
+      indices.push(h % 24); // wrap-around für Nacht (z.B. 25 => 1 Uhr)
+    }
+
+    const avgTemp = Math.round(indices.reduce((sum, i) => sum + temps[i], 0) / indices.length);
+    const avgRain = Math.round(indices.reduce((sum, i) => sum + rains[i], 0) / indices.length);
+
+    const codeCounts = {};
+    indices.forEach(i => {
+      const code = codes[i];
+      codeCounts[code] = (codeCounts[code] || 0) + 1;
+    });
+    const mostFrequentCode = Object.entries(codeCounts).sort((a, b) => b[1] - a[1])[0][0];
+    const icon = iconMap[mostFrequentCode] || 'not-available.svg';
+
+    const item = document.createElement('div');
+    item.classList.add('forecast-item');
+
+    item.innerHTML = `
+      <img src="symbol/${icon}" alt="${range.label} icon" class="weather-icon">
+      <div class="forecast-content">
+        <h3>${range.label}</h3>
+        <p><img src="symbol/wi_thermometer.svg" class="inline-icon" alt="Temp"> ${avgTemp}°C</p>
+        <p><img src="symbol/wi_umbrella.svg" class="inline-icon" alt="Rain"> ${avgRain}%</p>
+      </div>
+    `;
+
+    forecastContainer.appendChild(item);
+  });
+}

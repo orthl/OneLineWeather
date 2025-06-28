@@ -57,7 +57,7 @@ header {
   justify-content: flex-start;
   text-align: left;
   gap: 2rem;
-  padding: 2rem;
+  padding: 4rem;
   max-width: 80%;
   width: 100%;
   position: relative;
@@ -69,8 +69,8 @@ header {
   align-items: flex-start;
   gap: 1.5rem;
   margin-bottom: 2rem;
-  position: absolute;
-  bottom: 40%;
+  padding-top: 20%;
+  padding-bottom: 20%;
 }
 
 .main-icon {
@@ -94,8 +94,6 @@ header {
   gap: 2rem;
   justify-content: flex-start;
   align-items: flex-start;
-  position: absolute;
-  bottom: 10%;
   width: 100%;
   box-sizing: border-box;
 }
@@ -184,6 +182,28 @@ footer nav a:hover {
 .main-icon,.weather-icon,
 .inline-icon {
   filter: brightness(0) invert(1) drop-shadow(0 0 1px white) !important;
+}
+
+
+
+/* Generell kein Overflow */
+html, body {
+  overflow-x: hidden;
+  overflow-y: auto; /* vertikal scrollen nur wenn nötig */
+}
+
+a {
+  color: white; /* Standardfarbe */
+  text-decoration: underline;
+  transition: color 0.3s;
+}
+
+a:hover {
+  color: #ccc; /* Bei Hover */
+}
+
+a:visited {
+  color: #ccc; /* Nach dem Klicken */
 }
 
 @media (max-width: 600px) {
@@ -286,22 +306,56 @@ footer nav a:hover {
     }
 }
 
-/* Generell kein Overflow */
-html, body {
-  overflow-x: hidden;
-  overflow-y: auto; /* vertikal scrollen nur wenn nötig */
-}
+@media (min-width: 601px) and (max-width: 1400px) {
+  .forecast {
+    flex-wrap: wrap;
+    gap: 2rem;
+    justify-content: space-between;
+  }
 
-a {
-  color: white; /* Standardfarbe */
-  text-decoration: underline;
-  transition: color 0.3s;
-}
+  .forecast-item {
+    width: 45%; /* zwei in einer Reihe mit Abstand */
+    flex-direction: row;
+    align-items: center;
+    padding: 1rem 0;
+  }
 
-a:hover {
-  color: #ccc; /* Bei Hover */
-}
+  .forecast-item img.weather-icon {
+    width: 80px;
+    height: 80px;
+    margin-top: 0;
+  }
 
-a:visited {
-  color: #ccc; /* Nach dem Klicken */
+  .forecast-content h3 {
+    font-size: 1.5rem;
+  }
+
+  .forecast-content p {
+    font-size: 1.2rem;
+  }
+
+  .inline-icon {
+    width: 30px;
+    height: 30px;
+    margin-left: 0;
+  }
+
+  .main {
+    padding: 2rem;
+    max-width: 100%;
+  }
+
+  .sentence {
+    font-size: 3rem;
+  }
+
+  .main-icon {
+    width: 150px;
+    height: 150px;
+  }
+	
+.sentence-block {
+  padding-top: 10%;
+  padding-bottom: 10%;
+}
 }
