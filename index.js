@@ -8,12 +8,11 @@ const mainIcon = document.querySelector('.main-icon');
 const forecastContainer = document.getElementById('forecast-container');
 const locationName = document.getElementById('location-name');
 const welcomeText = document.getElementById('welcome-text');
-const forecastNav = document.getElementById('forecast-nav');
 
 let debounceTimer;
 let currentWeatherData = null;
 let dayOffset = 0;
-const MIN_OFFSET = -3;
+const MIN_OFFSET = 0;
 const MAX_OFFSET = 3;
 
 // Eingabe automatisch behandeln
@@ -28,8 +27,8 @@ locationInput.addEventListener('input', () => {
       forecastContainer.innerHTML = '';
       mainIcon.src = 'symbol/wi_partly-cloudy-day.svg';
       locationName.textContent = '';
-      forecastNav.style.display = 'none';
       welcomeText.style.display = 'block';
+      document.getElementById('forecast-nav').style.display = 'none'; // HIER
       return;
     }
 
@@ -51,8 +50,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     mainIcon.src = 'symbol/wi_partly-cloudy-day.svg';
     forecastContainer.innerHTML = '';
     locationName.textContent = '';
-    forecastNav.style.display = 'none';
     welcomeText.style.display = 'block';
+    document.getElementById('forecast-nav').style.display = 'none'; // HIER
   }
 });
 
@@ -60,7 +59,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 async function handleLocation(query) {
   sentenceElement.textContent = 'Loading…';
   if (mainIcon) mainIcon.src = 'symbol/wi_partly-cloudy-day.svg';
-  forecastNav.style.display = 'none';
 
   const coords = await getCoordinates(query);
   if (!coords) {
@@ -68,7 +66,6 @@ async function handleLocation(query) {
     forecastContainer.innerHTML = '';
     locationName.textContent = '';
     mainIcon.src = 'symbol/wi_partly-cloudy-day.svg';
-    forecastNav.style.display = 'none';
     return;
   }
 
@@ -78,7 +75,6 @@ async function handleLocation(query) {
     forecastContainer.innerHTML = '';
     locationName.textContent = '';
     mainIcon.src = 'symbol/wi_partly-cloudy-day.svg';
-    forecastNav.style.display = 'none';
     return;
   }
 
@@ -100,7 +96,6 @@ async function handleLocation(query) {
   currentWeatherData = weather;
   updateForecastDate();
   renderForecastItemsHourly(weather.hourly);
-  forecastNav.style.display = 'flex';
 }
 
 // Forecast mit Stunden und Offset
@@ -127,7 +122,6 @@ function renderForecastItemsHourly(hourly) {
 
   if (indices.length === 0) {
     forecastContainer.innerHTML = '<p>No forecast data available.</p>';
-    forecastNav.style.display = 'none';
     return;
   }
 
