@@ -28,7 +28,6 @@ locationInput.addEventListener('input', () => {
       mainIcon.src = 'symbol/wi_partly-cloudy-day.svg';
       locationName.textContent = '';
       welcomeText.style.display = 'block';
-      document.getElementById('forecast-nav').style.display = 'none'; // HIER
       return;
     }
 
@@ -51,7 +50,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     forecastContainer.innerHTML = '';
     locationName.textContent = '';
     welcomeText.style.display = 'block';
-    document.getElementById('forecast-nav').style.display = 'none'; // HIER
   }
 });
 
@@ -165,8 +163,13 @@ function renderForecastItemsHourly(hourly) {
     forecastContainer.appendChild(item);
 
   // Forecast-Navigation ein-/ausblenden je nach Inhalt
-  document.getElementById('forecast-nav').style.display =
-  document.querySelectorAll('.forecast-item').length > 0 ? 'flex' : 'none';
+  const nav = document.getElementById('forecast-nav');
+    if (document.querySelectorAll('.forecast-item').length > 0) {
+      nav.style.display = 'flex';
+    } else {
+      nav.style.display = 'none';
+  }
+
   });
 }
 
