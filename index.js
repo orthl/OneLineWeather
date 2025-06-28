@@ -12,6 +12,9 @@ const welcomeText = document.getElementById('welcome-text');
 let debounceTimer;
 let currentWeatherData = null;
 let dayOffset = 0;
+const MIN_OFFSET = 0;
+const MAX_OFFSET = 3;
+
 
 // Eingabe automatisch behandeln
 locationInput.addEventListener('input', () => {
@@ -170,13 +173,14 @@ function updateForecastDate() {
   const options = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' };
   document.getElementById('forecast-date').textContent = today.toLocaleDateString('en-EN', options);
 
-  document.getElementById('prev-day').disabled = dayOffset <= -3;
-  document.getElementById('next-day').disabled = dayOffset >= 3;
+  document.getElementById('prev-day').disabled = dayOffset <= MIN_OFFSET;
+  document.getElementById('next-day').disabled = dayOffset >= MAX_OFFSET;
+
 }
 
 // Navigation
 document.getElementById('prev-day').addEventListener('click', () => {
-  if (dayOffset > -3) {
+  if (dayOffset > MIN_OFFSET) {
     dayOffset--;
     updateForecastDate();
     renderForecastItemsHourly(currentWeatherData.hourly);
@@ -184,7 +188,7 @@ document.getElementById('prev-day').addEventListener('click', () => {
 });
 
 document.getElementById('next-day').addEventListener('click', () => {
-  if (dayOffset < 3) {
+  if (dayOffset < MAX_OFFSET) {
     dayOffset++;
     updateForecastDate();
     renderForecastItemsHourly(currentWeatherData.hourly);
