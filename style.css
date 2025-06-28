@@ -27,6 +27,16 @@ html, body {
   min-height: 100vh;
 }
 
+h2 {
+  margin-top: 2rem; /* Abstand nach oben */
+  margin-bottom: 1rem; /* Abstand zum folgenden Absatz */
+}
+
+p {
+  margin-bottom: 1.5rem; /* mehr Abstand zum nächsten Element */
+}
+
+
 body {
   display: flex;
   flex-direction: column;
