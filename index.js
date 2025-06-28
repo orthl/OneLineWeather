@@ -26,14 +26,8 @@ locationInput.addEventListener('input', () => {
     forecastContainer.innerHTML = '';
     mainIcon.src = 'symbol/wi_partly-cloudy-day.svg';
     locationName.textContent = '';
-        console.log('Zeige Welcome-Text 1');
-    welcomeText.style.display = 'block'; // ⬅ wird nun korrekt angezeigt
     return;
   }
-
-  welcomeText.style.display = 'none'; // bei nicht leerem Text ausblenden
-    console.log('Verstecke Welcome-Text 1');
-
 
   clearTimeout(debounceTimer);
   debounceTimer = setTimeout(async () => {
@@ -51,15 +45,11 @@ document.addEventListener('DOMContentLoaded', async () => {
   if (saved && saved.trim() !== '') {
     locationInput.value = saved;
     await handleLocation(saved);
-    welcomeText.style.display = 'none';
-    console.log('Verstecke Welcome-Text 2');
   } else {
     sentenceElement.textContent = 'One Line Weather.';
     mainIcon.src = 'symbol/wi_partly-cloudy-day.svg';
     forecastContainer.innerHTML = '';
     locationName.textContent = '';
-    welcomeText.style.display = 'block';
-    console.log('Zeige Welcome-Text 2');
   }
 });
 
