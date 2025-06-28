@@ -335,4 +335,5 @@ a:visited {
 
 #welcome-text {
   display: none;
+  clamp(1rem, 3vw, 2rem);
 }
