@@ -139,47 +139,72 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function renderForecastItemsHourly(hourly) {
   const timeRanges = [
-  { label: 'Morning', start: 6, end: 12 },
-  { label: 'Noon', start: 12, end: 16 },
-  { label: 'Evening', start: 16, end: 20 },
-  { label: 'Night', start: 20, end: 30 }
-];
+    { label: 'Morning', start: 6, end: 12 },
+    { label: 'Noon', start: 12, end: 16 },
+    { label: 'Evening', start: 16, end: 20 },
+    { label: 'Night', start: 20, end: 30 } // 20–23 + 0–5 des nächsten Tages
+  ];
 
-forecastContainer.innerHTML = '';
+  const baseDate = new Date();
+  baseDate.setHours(0, 0, 0, 0); // heute 00:00 Uhr
+  baseDate.setDate(baseDate.getDate() + dayOffset); // auf den gewünschten Tag setzen
 
-timeRanges.forEach(range => {
-  let indices = [];
-  for (let h = range.start; h < range.end; h++) {
-    let index = (h + dayOffset * 24) % 168; // 168 Stunden = 7 Tage
-    if (index < 0) index += 168;
-    indices.push(index);
+  // Zeit-Indexbereich für den aktuellen Tag finden
+  const startTimestamp = baseDate.getTime();
+
+  const indices = hourly.time
+    .map((timestamp, index) => {
+      const t = new Date(timestamp).getTime();
+      return { t, index };
+    })
+    .filter(obj => obj.t >= startTimestamp && obj.t < startTimestamp + 24 * 60 * 60 * 1000)
+    .map(obj => obj.index);
+
+  if (indices.length === 0) {
+    forecastContainer.innerHTML = '<p>No forecast data available.</p>';
+    return;
   }
 
-  const avgTemp = Math.round(indices.reduce((sum, i) => sum + hourly.temperature_2m[i], 0) / indices.length);
-  const avgRain = Math.round(indices.reduce((sum, i) => sum + hourly.precipitation_probability[i], 0) / indices.length);
+  forecastContainer.innerHTML = '';
 
-  const codeCounts = {};
-  indices.forEach(i => {
-    const code = hourly.weathercode[i];
-    codeCounts[code] = (codeCounts[code] || 0) + 1;
+  timeRanges.forEach(range => {
+    const rangeIndices = indices.filter(i => {
+      const hour = new Date(hourly.time[i]).getHours();
+      if (range.label === 'Night') {
+        return hour >= 20 || hour < 6;
+      }
+      return hour >= range.start && hour < range.end;
+    });
+
+    if (rangeIndices.length === 0) return;
+
+    const avgTemp = Math.round(rangeIndices.reduce((sum, i) => sum + hourly.temperature_2m[i], 0) / rangeIndices.length);
+    const avgRain = Math.round(rangeIndices.reduce((sum, i) => sum + hourly.precipitation_probability[i], 0) / rangeIndices.length);
+
+    const codeCounts = {};
+    rangeIndices.forEach(i => {
+      const code = hourly.weathercode[i];
+      codeCounts[code] = (codeCounts[code] || 0) + 1;
+    });
+    const mostFrequentCode = Object.entries(codeCounts).sort((a, b) => b[1] - a[1])[0][0];
+    const icon = iconMap[mostFrequentCode] || 'not-available.svg';
+
+    const item = document.createElement('div');
+    item.classList.add('forecast-item');
+
+    item.innerHTML = `
+      <img src="symbol/${icon}" alt="${range.label} icon" class="weather-icon">
+      <div class="forecast-content">
+        <h3>${range.label}</h3>
+        <p><img src="symbol/wi_thermometer.svg" class="inline-icon" alt="Temp"> ${avgTemp}°C</p>
+        <p><img src="symbol/wi_umbrella.svg" class="inline-icon" alt="Rain"> ${avgRain}%</p>
+      </div>
+    `;
+
+    forecastContainer.appendChild(item);
   });
-  const mostFrequentCode = Object.entries(codeCounts).sort((a, b) => b[1] - a[1])[0][0];
-  const icon = iconMap[mostFrequentCode] || 'not-available.svg';
+}
 
-  const item = document.createElement('div');
-  item.classList.add('forecast-item');
-
-  item.innerHTML = `
-    <img src="symbol/${icon}" alt="${range.label} icon" class="weather-icon">
-    <div class="forecast-content">
-      <h3>${range.label}</h3>
-      <p><img src="symbol/wi_thermometer.svg" class="inline-icon" alt="Temp"> ${avgTemp}°C</p>
-      <p><img src="symbol/wi_umbrella.svg" class="inline-icon" alt="Rain"> ${avgRain}%</p>
-    </div>
-  `;
-
-  forecastContainer.appendChild(item);
-});
 
 
   const temps = hourly.temperature_2m;
@@ -226,7 +251,7 @@ function updateForecastDate() {
   today.setDate(today.getDate() + dayOffset);
 
   const options = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' };
-  document.getElementById('forecast-date').textContent = today.toLocaleDateString(undefined, options);
+  document.getElementById('forecast-date').textContent = today.toLocaleDateString('en-EN', options);
 
   document.getElementById('prev-day').disabled = dayOffset <= -3;
   document.getElementById('next-day').disabled = dayOffset >= 3;
