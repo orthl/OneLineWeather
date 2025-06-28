@@ -350,23 +350,34 @@ a:visited {
 
 .about-section {
   width: 100%;
-  margin-top: 8rem; /* beginnt unterhalb des Screens */
-  padding: 0 4rem;
+  margin-top: 8rem;
+  display: flex;
+  justify-content: center;
+  padding: 0 2rem;
 }
 
 .about-content {
-  max-width: 100%;
-  line-height: 1.6;
+  width: 100%;
+  max-width: 80%;
+  text-align: left;
   font-size: 0.95rem;
   color: #ccc;
-  text-align: left;
+  line-height: 1.6;
 }
+
 .about-content h2 {
   font-size: 1.2rem;
   margin-top: 2rem;
   margin-bottom: 1rem;
 }
+
 .about-content p {
   margin-bottom: 1.5rem;
+}
+@media (max-width: 768px) {
+  .about-content {
+    max-width: 100%;
+    padding: 0;
+  }
 }
 
