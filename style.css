@@ -205,7 +205,6 @@ a:visited {
 .forecast-nav button img {
   width: 32px;
   height: 32px;
-  filter: brightness(0) invert(1);
 }
 
 .forecast-nav button:disabled img {
