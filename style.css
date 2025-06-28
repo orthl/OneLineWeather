@@ -234,7 +234,11 @@ a:visited {
     padding: 1rem;
     max-width: 100%;
   }
-
+  .about-section {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+  
   .about-content {
     max-width: 100%;
     padding: 0;
