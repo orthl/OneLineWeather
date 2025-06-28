@@ -382,3 +382,22 @@ a:visited {
   }
 }
 
+.back-button {
+  display: inline-block;
+  font-family: 'FiraCode', monospace;
+  font-weight: 700;
+  font-size: 1rem;
+  color: white;
+  background-color: #1a1a1a;
+  padding: 1rem 1.5rem;
+  border: 1px solid #444;
+  border-radius: 8px;
+  text-decoration: none;
+  margin-top: 2rem;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.back-button:hover {
+  background-color: #333;
+  color: #ccc;
+}
