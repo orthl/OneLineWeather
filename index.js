@@ -163,6 +163,10 @@ function renderForecastItemsHourly(hourly) {
     `;
 
     forecastContainer.appendChild(item);
+
+  // Forecast-Navigation ein-/ausblenden je nach Inhalt
+  document.getElementById('forecast-nav').style.display =
+  document.querySelectorAll('.forecast-item').length > 0 ? 'flex' : 'none';
   });
 }
 
