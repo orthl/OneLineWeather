@@ -17,25 +17,28 @@ const MAX_OFFSET = 3;
 
 // Eingabe automatisch behandeln
 
-// Eingabe automatisch behandeln
 locationInput.addEventListener('input', () => {
+  const query = locationInput.value.trim();
+
+  if (!query) {
+    clearTimeout(debounceTimer); // ⬅ wichtig!
+    sentenceElement.textContent = 'One Line Weather.';
+    forecastContainer.innerHTML = '';
+    mainIcon.src = 'symbol/wi_partly-cloudy-day.svg';
+    locationName.textContent = '';
+    welcomeText.style.display = 'block'; // ⬅ wird nun korrekt angezeigt
+    return;
+  }
+
+  welcomeText.style.display = 'none'; // bei nicht leerem Text ausblenden
+
   clearTimeout(debounceTimer);
-
   debounceTimer = setTimeout(async () => {
-    const query = locationInput.value.trim();
-Add commentMore actions
-    if (!query) {
-      sentenceElement.textContent = 'One Line Weather.';
-      forecastContainer.innerHTML = '';
-      mainIcon.src = 'symbol/wi_partly-cloudy-day.svg'; // Standard Icon
-      locationName.textContent = '';
-      return;
-    }
-
     localStorage.setItem('lastLocation', query);
     await handleLocation(query);
   }, 500);
 });
+
 
 
 // Seite geladen
