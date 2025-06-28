@@ -48,12 +48,11 @@ locationInput.addEventListener('input', () => {
 document.addEventListener('DOMContentLoaded', async () => {
   const saved = localStorage.getItem('lastLocation');
 
-  if (saved) {
+  if (saved && saved.trim() !== '') {
     locationInput.value = saved;
     await handleLocation(saved);
     welcomeText.style.display = 'none';
-      console.log('Verstecke Welcome-Text 2');
-
+    console.log('Verstecke Welcome-Text 2');
   } else {
     sentenceElement.textContent = 'One Line Weather.';
     mainIcon.src = 'symbol/wi_partly-cloudy-day.svg';
