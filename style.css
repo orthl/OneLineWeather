@@ -69,11 +69,15 @@ header {
   top: 50%;
   left: 0;
   transform: translateY(-50%);
+  padding-left: 4rem;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: 1.5rem;
+  width: 100%;
+  box-sizing: border-box;
 }
+
 
 .main-icon {
   width: 200px;
@@ -185,11 +189,12 @@ a:visited {
   }
 
   .sentence-block {
-    position: static;
-    transform: none;
-    margin-bottom: 1rem;
-    padding: 2rem 0;
-  }
+  position: static;
+  transform: none;
+  padding: 2rem 1rem;
+  margin-bottom: 1rem;
+}
+
 
   .sentence {
     font-size: 2rem;
