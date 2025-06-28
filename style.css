@@ -203,12 +203,13 @@ a:visited {
 }
 
 .forecast-nav button img {
-  width: 32px;
-  height: 32px;
+  width: 48px;
+  height: 48px;
 }
 
 .forecast-nav button:disabled img {
   cursor: not-allowed;
+  opacity: 0.5;
 }
 
 #forecast-date {
