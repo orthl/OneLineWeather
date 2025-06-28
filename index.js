@@ -7,6 +7,7 @@ const sentenceElement = document.querySelector('.sentence');
 const mainIcon = document.querySelector('.main-icon');
 const forecastContainer = document.getElementById('forecast-container');
 const locationName = document.getElementById('location-name');
+const welcomeText = document.getElementById('welcome-text');
 
 let debounceTimer;
 let currentWeatherData = null;
@@ -22,8 +23,9 @@ locationInput.addEventListener('input', () => {
     if (!query) {
       sentenceElement.textContent = 'One Line Weather.';
       forecastContainer.innerHTML = '';
-      mainIcon.src = 'symbol/wi_partly-cloudy-day.svg'; // Standard Icon
+      mainIcon.src = 'symbol/wi_partly-cloudy-day.svg';
       locationName.textContent = '';
+      welcomeText.style.display = 'block';
       return;
     }
 
@@ -32,41 +34,20 @@ locationInput.addEventListener('input', () => {
   }, 500);
 });
 
-// Forecast-Items erzeugen mit Wetterdaten
-/* ALT: renderForecastItems ersetzt */
-function renderForecastItems_OLD(temp, rain, icon) {
-  const times = ['Morning', 'Noon', 'Evening', 'Night'];
-  forecastContainer.innerHTML = '';
-
-  times.forEach(time => {
-    const item = document.createElement('div');
-    item.classList.add('forecast-item');
-
-    item.innerHTML = `
-      <img src="symbol/${icon}" alt="${time} icon" class="weather-icon">
-      <div class="forecast-content">
-        <h3>${time}</h3>
-        <p><img src="symbol/wi_thermometer.svg" alt="Temperature" class="inline-icon"> ${temp}°C</p>
-        <p><img src="symbol/wi_umbrella.svg" alt="Rain" class="inline-icon"> ${rain}%</p>
-      </div>
-    `;
-    forecastContainer.appendChild(item);
-  });
-}
-
-// Wenn Seite geladen wird
+// Seite geladen
 document.addEventListener('DOMContentLoaded', async () => {
   const saved = localStorage.getItem('lastLocation');
 
   if (saved) {
     locationInput.value = saved;
     await handleLocation(saved);
+    welcomeText.style.display = 'none';
   } else {
-    // Standardanzeige bei leerem Start
     sentenceElement.textContent = 'One Line Weather.';
-    mainIcon.src = 'symbol/wi_partly-cloudy-day.svg'; // Standard Icon
+    mainIcon.src = 'symbol/wi_partly-cloudy-day.svg';
     forecastContainer.innerHTML = '';
     locationName.textContent = '';
+    welcomeText.style.display = 'block';
   }
 });
 
@@ -80,7 +61,7 @@ async function handleLocation(query) {
     sentenceElement.textContent = 'Location not found.';
     forecastContainer.innerHTML = '';
     locationName.textContent = '';
-    mainIcon.src = 'symbol/wi_partly-cloudy-day.svg'; // Standard Icon bei Fehler
+    mainIcon.src = 'symbol/wi_partly-cloudy-day.svg';
     return;
   }
 
@@ -89,7 +70,7 @@ async function handleLocation(query) {
     sentenceElement.textContent = 'No weather data.';
     forecastContainer.innerHTML = '';
     locationName.textContent = '';
-    mainIcon.src = 'symbol/wi_partly-cloudy-day.svg'; // Standard Icon bei Fehler
+    mainIcon.src = 'symbol/wi_partly-cloudy-day.svg';
     return;
   }
 
@@ -110,46 +91,21 @@ async function handleLocation(query) {
 
   currentWeatherData = weather;
   updateForecastDate();
-
   renderForecastItemsHourly(weather.hourly);
 }
 
-const welcomeText = document.getElementById('welcome-text');
-
-locationInput.addEventListener('input', () => {
-  const query = locationInput.value.trim();
-
-  if (query) {
-    welcomeText.style.display = 'none';
-  } else {
-    welcomeText.style.display = 'block';
-  }
-});
-
-// Beim Laden prüfen
-document.addEventListener('DOMContentLoaded', () => {
-  const saved = localStorage.getItem('lastLocation');
-  if (saved && saved.trim()) {
-    welcomeText.style.display = 'none';
-  } else {
-    welcomeText.style.display = 'block';
-  }
-});
-
-
+// Forecast mit Stunden und Offset
 function renderForecastItemsHourly(hourly) {
   const timeRanges = [
     { label: 'Morning', start: 6, end: 12 },
     { label: 'Noon', start: 12, end: 16 },
     { label: 'Evening', start: 16, end: 20 },
-    { label: 'Night', start: 20, end: 30 } // 20–23 + 0–5 des nächsten Tages
+    { label: 'Night', start: 20, end: 30 }
   ];
 
   const baseDate = new Date();
-  baseDate.setHours(0, 0, 0, 0); // heute 00:00 Uhr
-  baseDate.setDate(baseDate.getDate() + dayOffset); // auf den gewünschten Tag setzen
-
-  // Zeit-Indexbereich für den aktuellen Tag finden
+  baseDate.setHours(0, 0, 0, 0);
+  baseDate.setDate(baseDate.getDate() + dayOffset);
   const startTimestamp = baseDate.getTime();
 
   const indices = hourly.time
@@ -186,6 +142,7 @@ function renderForecastItemsHourly(hourly) {
       const code = hourly.weathercode[i];
       codeCounts[code] = (codeCounts[code] || 0) + 1;
     });
+
     const mostFrequentCode = Object.entries(codeCounts).sort((a, b) => b[1] - a[1])[0][0];
     const icon = iconMap[mostFrequentCode] || 'not-available.svg';
 
@@ -205,47 +162,7 @@ function renderForecastItemsHourly(hourly) {
   });
 }
 
-
-
-  const temps = hourly.temperature_2m;
-  const rains = hourly.precipitation_probability;
-  const codes = hourly.weathercode;
-
-  forecastContainer.innerHTML = '';
-
-  timeRanges.forEach(range => {
-    let indices = [];
-    for (let h = range.start; h < range.end; h++) {
-      indices.push(h % 24); // wrap-around für Nacht (z.B. 25 => 1 Uhr)
-    }
-
-    const avgTemp = Math.round(indices.reduce((sum, i) => sum + temps[i], 0) / indices.length);
-    const avgRain = Math.round(indices.reduce((sum, i) => sum + rains[i], 0) / indices.length);
-
-    const codeCounts = {};
-    indices.forEach(i => {
-      const code = codes[i];
-      codeCounts[code] = (codeCounts[code] || 0) + 1;
-    });
-    const mostFrequentCode = Object.entries(codeCounts).sort((a, b) => b[1] - a[1])[0][0];
-    const icon = iconMap[mostFrequentCode] || 'not-available.svg';
-
-    const item = document.createElement('div');
-    item.classList.add('forecast-item');
-
-    item.innerHTML = `
-      <img src="symbol/${icon}" alt="${range.label} icon" class="weather-icon">
-      <div class="forecast-content">
-        <h3>${range.label}</h3>
-        <p><img src="symbol/wi_thermometer.svg" class="inline-icon" alt="Temp"> ${avgTemp}°C</p>
-        <p><img src="symbol/wi_umbrella.svg" class="inline-icon" alt="Rain"> ${avgRain}%</p>
-      </div>
-    `;
-
-    forecastContainer.appendChild(item);
-  });
-}
-
+// Datum aktualisieren (Englisch)
 function updateForecastDate() {
   const today = new Date();
   today.setDate(today.getDate() + dayOffset);
@@ -257,6 +174,7 @@ function updateForecastDate() {
   document.getElementById('next-day').disabled = dayOffset >= 3;
 }
 
+// Navigation
 document.getElementById('prev-day').addEventListener('click', () => {
   if (dayOffset > -3) {
     dayOffset--;
