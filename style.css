@@ -235,6 +235,10 @@ a:visited {
     max-width: 100%;
   }
 
+  .about-content {
+    max-width: 100%;
+    padding: 0;
+  }
   .sentence-block {
   position: static;
   transform: none;
@@ -374,12 +378,6 @@ a:visited {
 
 .about-content p {
   margin-bottom: 1.5rem;
-}
-@media (max-width: 768px) {
-  .about-content {
-    max-width: 100%;
-    padding: 0;
-  }
 }
 
 .back-button {
