@@ -162,14 +162,6 @@ function renderForecastItemsHourly(hourly) {
 
     forecastContainer.appendChild(item);
 
-  // Forecast-Navigation ein-/ausblenden je nach Inhalt
-  const nav = document.getElementById('forecast-nav');
-    if (document.querySelectorAll('.forecast-item').length > 0) {
-      nav.style.display = 'flex';
-    } else {
-      nav.style.display = 'none';
-  }
-
   });
 }
 
